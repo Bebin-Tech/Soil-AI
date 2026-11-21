@@ -41,14 +41,15 @@ export default function AuthPage() {
             setError(errorMessage(e));
         }
     });
-    if (!forgot && !reset) {
+    if (!reset) {
         return <main className="login-page">
             <div className="login-language"><LanguageSwitcher /></div>
             <section className="login-card" aria-labelledby="login-title">
                 <Link to="/" className="login-logo" aria-label="SoilAI"><Sprout aria-hidden="true" /></Link>
                 <header className="login-heading">
                     <h1 id="login-title">SoilAI</h1>
-                    <p>{t(registerMode ? 'Create your farmer account to get started.' : 'Sign in to your SoilAI workspace.')}</p>
+                    <p>{t(forgot ? 'Recover your account.' : registerMode ? 'Create your farmer account to get started.' : 'Sign in to your SoilAI workspace.')}</p>
+                    {forgot && <p>{t('Enter your email address to receive a password reset link.')}</p>}
                 </header>
                 <form onSubmit={submit}>
                     {registerMode && <label>
@@ -66,7 +67,7 @@ export default function AuthPage() {
                         </span>
                         {errors.email && <small id="login-email-error" className="error">{errors.email.message}</small>}
                     </label>
-                    <label>
+                    {!forgot && <label>
                         <span className="sr-only">{t('Password')}</span>
                         <span className="login-input">
                             <LockKeyhole aria-hidden="true" />
@@ -74,13 +75,15 @@ export default function AuthPage() {
                             <button type="button" className="login-password-toggle" aria-label={t(showPassword ? 'Hide password' : 'Show password')} aria-pressed={showPassword} onClick={() => setShowPassword(value => !value)}>{showPassword ? <EyeOff aria-hidden="true" /> : <Eye aria-hidden="true" />}</button>
                         </span>
                         {registerMode && <small id="register-password-hint" className="muted">{t('Use at least 12 characters.')}</small>}
-                    </label>
+                    </label>}
+                    {forgot && <input type="hidden" {...register('password')} value="unused" />}
                     {error && <div role="alert" className="alert error">{error}</div>}
-                    <button className="login-submit" disabled={isSubmitting}>{isSubmitting ? t('Please wait…') : t(registerMode ? 'Create account' : 'Sign in')}</button>
+                    {message && <div role="status" className="alert">{t(message)}</div>}
+                    <button className="login-submit" disabled={isSubmitting}>{isSubmitting ? t('Please wait…') : t(forgot ? 'Send reset link' : registerMode ? 'Create account' : 'Sign in')}</button>
                 </form>
-                {!registerMode && <Link className="login-forgot" to="/forgot">{t('Forgot password?')}</Link>}
+                {!registerMode && !forgot && <Link className="login-forgot" to="/forgot">{t('Forgot password?')}</Link>}
                 {registerMode && <p className="login-account-prompt">{t('Already have an account?')}</p>}
-                <Link className="login-create" to={registerMode ? '/login' : '/register'}>{t(registerMode ? 'Sign in' : 'Create an account')}</Link>
+                <Link className="login-create" to={registerMode || forgot ? '/login' : '/register'}>{t(forgot ? 'Back to sign in' : registerMode ? 'Sign in' : 'Create an account')}</Link>
                 <p className="login-caption">{t('Built for farmers. Informed by science.')}</p>
             </section>
         </main>;
