@@ -12,6 +12,7 @@ def test_reports_english_tamil_excel_and_access(client,account):
     for language,format in [('en','pdf'),('ta','pdf'),('ta','xlsx')]:
         result=client.post('/api/v1/reports',headers=headers,json={'sample_id':sample['id'],'language':language,'format':format})
         assert result.status_code==201,result.text
+        # Generation uses temporary files; download must survive their removal.
         download=client.get(result.json()['download_url'],headers=headers)
         assert download.status_code==200
         if format=='pdf':
@@ -22,3 +23,7 @@ def test_reports_english_tamil_excel_and_access(client,account):
             assert workbook.active['B4'].value=='S-001'
         stranger=register(client,f'{language}{format}@example.com')
         assert client.get(result.json()['download_url'],headers={'Authorization':'Bearer '+stranger['access_token']}).status_code==404
+    listing=client.get('/api/v1/reports',headers=headers)
+    assert listing.status_code==200
+    assert len(listing.json())==3
+    assert all('content' not in item and 'path' not in item for item in listing.json())

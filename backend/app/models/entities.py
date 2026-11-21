@@ -1,6 +1,6 @@
 import uuid
 from datetime import datetime, timezone
-from sqlalchemy import String, Text, Float, ForeignKey, UniqueConstraint, JSON, DateTime, Boolean, Integer, CheckConstraint
+from sqlalchemy import String, Text, Float, ForeignKey, UniqueConstraint, JSON, DateTime, Boolean, Integer, CheckConstraint, LargeBinary
 from sqlalchemy.orm import Mapped, mapped_column
 from app.database.session import Base
 
@@ -197,6 +197,7 @@ class Report(Record, Base):
     language: Mapped[str] = mapped_column(String(2))
     format: Mapped[str] = mapped_column(String(10))
     path: Mapped[str] = mapped_column(Text)
+    content: Mapped[bytes | None] = mapped_column(LargeBinary, nullable=True, deferred=True)
 
 
 class Notification(Record, Base):

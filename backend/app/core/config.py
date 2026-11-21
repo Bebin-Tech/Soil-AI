@@ -25,6 +25,8 @@ class Settings(BaseSettings):
 
     @model_validator(mode='after')
     def secure_config(self):
+        if self.database_url.startswith(('postgres://', 'postgresql://')):
+            self.database_url = 'postgresql+psycopg://' + self.database_url.split('://', 1)[1]
         if len(self.jwt_secret) < 32 or self.jwt_secret.startswith('replace-'):
             raise ValueError('JWT_SECRET must contain at least 32 random characters')
         if self.environment == 'production' and not self.database_url.startswith('postgresql'):
