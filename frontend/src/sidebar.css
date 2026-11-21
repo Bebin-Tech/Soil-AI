@@ -1,0 +1,47 @@
+/* Frosted blue glass over grey-white surfaces; no active-item edge stripe. */
+.sidebar {
+  background: radial-gradient(ellipse at 0 0, #a9ccf9b3, transparent 48%), radial-gradient(ellipse at 100% 100%, #c1d4ed99, transparent 50%), linear-gradient(155deg, #f6f9ffed, #e4e9f1f2 55%, #f8faffed);
+  color: #243b5b;
+  border-right: 1px solid #ffffffdb;
+  backdrop-filter: blur(24px) saturate(145%);
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+  box-shadow: 5px 0 24px #365c8c0a;
+  padding: 30px 16px 16px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #9db3d0 transparent;
+}
+.sidebar-brand-row { display: flex; align-items: center; justify-content: space-between; padding: 0 12px 25px; border-bottom: 1px solid #b8c9df99; }
+.sidebar .brand { padding-left: 0; font-size: 1.7rem; letter-spacing: -.05em; color: #203857; }
+.sidebar .brand-icon { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(145deg, #4b94ed, #2f63bd); color: #fff; margin-right: 10px; border: 1px solid #ffffff8c; box-shadow: 0 5px 12px #346cc42b; }
+.sidebar .brand-ai { color: #3676cf; }
+.sidebar .workspace-label { color: #526983; font-size: .75rem; letter-spacing: .09em; margin: 27px 14px 14px; line-height: 1.7; }
+.sidebar nav { gap: 6px; }
+.sidebar nav a { color: #425b79; padding: 9px 12px; min-height: 52px; gap: 12px; border: 1px solid transparent; border-radius: 10px; font-size: .875rem; font-weight: 500; transition: background .15s ease, color .15s ease; }
+.sidebar .nav-icon { display: grid; place-items: center; width: 30px; height: 30px; flex-shrink: 0; border-radius: 8px; color: #5c789e; }
+.sidebar nav a svg { width: 19px; height: 19px; stroke-width: 1.8; }
+.sidebar nav a:hover { background: #ffffffa8; color: #245da7; border-color: #ffffffdb; }
+.sidebar nav a.active, .sidebar nav a.active:hover { color: #fff; background: linear-gradient(120deg, #397bd6ed, #2e65beeF); border-color: #ffffff9c; box-shadow: 0 6px 16px #376abb26, inset 0 1px 0 #ffffff30; }
+.sidebar nav a.active .nav-icon { background: #ffffff24; color: #fff; }
+.sidebar nav a:focus-visible, .sidebar-user:focus-visible, .sidebar-close:focus-visible { outline: 2px solid #2f68bb; outline-offset: 3px; }
+.sidebar-divider { height: 1px; background: #b8c9df99; margin: 14px 13px; }
+.sidebar-bottom { padding-top: 36px; }
+.sidebar .science-note { display: flex; gap: 11px; padding: 16px 12px; margin: 0 0 20px; border: 1px solid #ffffffde; background: linear-gradient(135deg, #ffffffbd, #eaf1fb80); border-radius: 12px; box-shadow: 0 6px 18px #5078a60a; }
+.sidebar .science-note > svg { width: 18px; height: 18px; margin: 2px 0 0; flex-shrink: 0; color: #3878c9; }
+.sidebar .science-note strong { font-size: .875rem; font-weight: 550; color: #29496f; line-height: 1.5; }
+.sidebar .science-note p { font-size: .8rem; line-height: 1.65; color: #536980; margin-top: 7px; }
+.sidebar .sidebar-user { background: #ffffffad; border: 1px solid #ffffffed; border-radius: 12px; padding: 13px 11px; color: #294463; gap: 10px; box-shadow: 0 5px 20px #5078a60d; }
+.sidebar .sidebar-user:hover { background: #ffffffeb; }
+.sidebar .sidebar-user .avatar { width: 35px; height: 35px; border-radius: 10px; color: #2e62a8; background: linear-gradient(135deg, #d5e6fd, #edf3fc); border: 1px solid #bed3ed; }
+.sidebar .sidebar-user strong { font-size: .875rem; font-weight: 550; }
+.sidebar .sidebar-user small { font-size: .75rem; color: #5a728c; margin-top: 3px; letter-spacing: 0; text-transform: none; }
+.sidebar .sidebar-user > svg { color: #55769d; flex-shrink: 0; }
+.sidebar-close, .sidebar-backdrop { display: none; }
+@media (max-width: 800px) {
+  .sidebar { width: 260px; box-shadow: 12px 0 40px #36557826; }
+  .sidebar-close { display: grid; place-items: center; width: 32px; height: 32px; color: #526f94; border: 0; background: transparent; border-radius: 7px; cursor: pointer; }
+  .sidebar-close:hover { background: #ffffffad; }
+  .sidebar-backdrop { display: block; position: fixed; inset: 0; z-index: 29; border: 0; padding: 0; background: #263d5c45; }
+}
+@media (prefers-reduced-motion: reduce) { .sidebar nav a { transition: none; } }
+@media print { .sidebar-backdrop { display: none !important; } }

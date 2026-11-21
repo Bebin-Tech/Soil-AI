@@ -1,0 +1,36 @@
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: soilai
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set POSTGRES_PASSWORD in your environment}
+      POSTGRES_DB: soilai
+    ports: ["127.0.0.1:${POSTGRES_PORT:-5433}:5432"]
+    volumes: ["postgres_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U soilai"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  backend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/backend.Dockerfile
+    environment:
+      DATABASE_URL: postgresql+psycopg://soilai:${POSTGRES_PASSWORD}@db:5432/soilai
+      JWT_SECRET: ${JWT_SECRET:?Set JWT_SECRET in your environment}
+      ENVIRONMENT: production
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+    depends_on:
+      db: {condition: service_healthy}
+    volumes: ["uploads:/app/storage"]
+    command: ["sh", "-c", "alembic upgrade head && uvicorn app.main:app --host 0.0.0.0 --port 8000"]
+  frontend:
+    build:
+      context: .
+      dockerfile: infrastructure/docker/frontend.Dockerfile
+    ports: ["127.0.0.1:8080:80"]
+    depends_on: [backend]
+volumes:
+  postgres_data:
+  uploads:
